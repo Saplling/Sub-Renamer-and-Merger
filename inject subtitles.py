@@ -3,9 +3,9 @@ from pathlib import Path
 from sys import argv
 import subprocess
 
-def get_file_paths_of_type(directory: str, file_type:str) -> list[str]:
+def get_file_paths_of_type(directory: str, file_type:tuple[str]) -> list[str]:
     fileNamesStr = os.listdir(directory) 
-    filePaths = [Path(directory).joinpath(name_string) for name_string in fileNamesStr if Path(name_string).suffix == file_type] #Turns strings into path objects while making sure they're mkv's
+    filePaths = [Path(directory).joinpath(name_string) for name_string in fileNamesStr if Path(name_string).suffix in file_type] #Turns strings into path objects while making sure they're mkv's
     return filePaths
 
 
@@ -17,8 +17,8 @@ def main(args:list[str]):
     elif args[4] == "en":
         language = ["--language", "0:en", "--track-name", "0:English"]
 
-    mkv_paths: list[Path] = get_file_paths_of_type(mkv_dir, ".mkv")
-    sub_paths: list[Path] = get_file_paths_of_type(subs_dir, ".ass")
+    mkv_paths: list[Path] = get_file_paths_of_type(mkv_dir, (".mkv"))
+    sub_paths: list[Path] = get_file_paths_of_type(subs_dir, (".ass", ".srt"))
     if len(mkv_paths) != len(sub_paths):
         print("Mismatch in file amounts. Possiblity of missing some files...")
     for mkv_path, sub_path in zip(mkv_paths, sub_paths):
@@ -27,10 +27,10 @@ def main(args:list[str]):
             r"C:\Program Files\MKVToolNix\mkvmerge.exe",
             "-o",
             output_path,
-            mkv_path,
-            sub_path
+            mkv_path
         ]
-        if language: command[0:4].extend
+        if language: command.extend(language)
+        command.append(sub_path)
         subprocess.run(command)
 
 
@@ -38,6 +38,7 @@ class InvalidNumberOfArgumentsError(ValueError):
     pass
 
 if __name__ == "__main__":
-    if len(argv) > 5:
-        raise InvalidNumberOfArgumentsError("Too many or not enough arguments!\nFormat: [video dir] [subs dir] [output dir] [sub language]")
+    print(len(argv))
+    if len(argv) > 5 or len(argv) < 4:
+        raise InvalidNumberOfArgumentsError("Too many or not enough arguments!\nFormat: [video dir] [subs dir] [output dir] optional:[sub language]")
     main(argv)
