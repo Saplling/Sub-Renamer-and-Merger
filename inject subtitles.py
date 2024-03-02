@@ -13,9 +13,9 @@ def main(args:list[str]):
     mkv_dir, subs_dir, output_dir = args[1], args[2], args[3]
     language = []
     if args[4] == "jp":
-        language = ["--language" "0:ja" "--track-name 0:Japanese"]
+        language = ["--language", "0:ja", "--track-name", "0:Japanese"]
     elif args[4] == "en":
-        language = ["--language" "0:en" "--track-name 0:English"]
+        language = ["--language", "0:en", "--track-name", "0:English"]
 
     mkv_paths: list[Path] = get_file_paths_of_type(mkv_dir, ".mkv")
     sub_paths: list[Path] = get_file_paths_of_type(subs_dir, ".ass")
@@ -30,7 +30,7 @@ def main(args:list[str]):
             mkv_path,
             sub_path
         ]
-        # if language: command[0:4]
+        if language: command[0:4].extend
         subprocess.run(command)
 
 
