@@ -48,8 +48,6 @@ class InvalidNumberOfArgumentsError(ValueError):
     pass
 
 if __name__ == "__main__":
-    # print(len(argv))
-    # argv = ["", "F:\ANime\[Judas] Re.Zero kara Hajimeru Isekai Seikatsu (Season 2 Part 1) [1080p][HEVC x265 10bit][Multi-Subs]", "F:\ANime\[Judas] Re.Zero kara Hajimeru Isekai Seikatsu (Season 2 Part 1) [1080p][HEVC x265 10bit][Multi-Subs]\Subs", "F:\ANime\[Judas] Re.Zero kara Hajimeru Isekai Seikatsu (Season 2 Part 1) [1080p][HEVC x265 10bit][Multi-Subs]\Merged Videos", "jp"]
     if len(argv) > 5 or len(argv) < 4:
         raise InvalidNumberOfArgumentsError("Too many or not enough arguments!\nFormat: [video dir] [subs dir] [output dir] optional:[sub language]")
     main(argv)
