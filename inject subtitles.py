@@ -45,7 +45,10 @@ def main(args:list[str]):
 
 
 class InvalidNumberOfArgumentsError(ValueError):
-    pass
+    DEFAULT_MESSAGE = "Too many or not enough arguments!"
+    def __init__(self, message:str=DEFAULT_MESSAGE) -> None:
+        self.message = message
+        super().__init__(self.message)
 
 if __name__ == "__main__":
     if len(argv) > 5 or len(argv) < 4:
